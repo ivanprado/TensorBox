@@ -51,7 +51,8 @@ def inception_v1_base(inputs,
     ValueError: if final_endpoint is not set to one of the predefined values.
   """
   end_points = {}
-  with tf.variable_scope(scope, 'InceptionV1', [inputs]):
+  # with tf.variable_scope(scope, 'InceptionV1', [inputs]):
+  with tf.variable_scope(scope):
     with slim.arg_scope(
         [slim.conv2d, slim.fully_connected],
         weights_initializer=trunc_normal(0.01)):
@@ -281,12 +282,13 @@ def inception_v1(inputs,
       activation.
   """
   # Final pooling and prediction
-  with tf.variable_scope(scope, 'InceptionV1', [inputs, num_classes],
+  # with tf.variable_scope(scope, 'InceptionV1', [inputs, num_classes],
+  with tf.variable_scope(scope,
                          reuse=reuse) as scope:
     with slim.arg_scope([slim.batch_norm, slim.dropout],
                         is_training=is_training):
-      net, end_points = inception_v1_base(inputs, scope=scope)
       with tf.variable_scope('Logits'):
+	net, end_points = inception_v1_base(inputs, scope=scope)
         net = slim.avg_pool2d(net, [7, 7], stride=1, scope='MaxPool_0a_7x7')
         net = slim.dropout(net,
                            dropout_keep_prob, scope='Dropout_0b')

@@ -467,10 +467,10 @@ def train(H, test_images):
             print('Restoring from: %s' % weights_str)
             saver.restore(sess, weights_str)
         else:
-            init_fn = slim.assign_from_checkpoint_fn(
+            op, feed_dict = tf.contrib.framework.variables.assign_from_checkpoint(
                   '%s/data/inception_v1.ckpt' % os.path.dirname(os.path.realpath(__file__)),
                   [x for x in tf.all_variables() if x.name.startswith('InceptionV1') and not H['solver']['opt'] in x.name])
-            init_fn(sess)
+            sess.run(op, feed_dict)
 
         # train model for N iterations
         start = time.time()
