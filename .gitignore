@@ -4,4 +4,4 @@ output/*
 *.swp
 *.so
 inception/*
-hypes/*.json
+# hypes/*.json
