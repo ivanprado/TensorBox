@@ -40,7 +40,7 @@ def load_idl_tf(idlfile, H, jitter):
     for epoch in itertools.count():
         random.shuffle(annos)
         for anno in annos:
-            I = imread(anno.imageName)
+            I = imread(anno.imageName, mode="RGB")
 	    #Skip Greyscale images
             if len(I.shape) < 3:
                 print "{} greyscale. Skipping.".format(anno.imageName)
