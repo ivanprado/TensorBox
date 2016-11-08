@@ -43,16 +43,11 @@ def load_idl_tf(idlfile, H, jitter):
             I = imread(anno.imageName, mode="RGB")
 	    #Skip Greyscale images
             if len(I.shape) < 3:
-                print "{} greyscale. Skipping.".format(anno.imageName)
                 continue	    
-            if I.shape[2] == 4:
-                I = I[:, :, :3]
-                print "{} I.shape[2] == 4".format(anno.imageName)
             if I.shape[0] != H["image_height"] or I.shape[1] != H["image_width"]:
                 if epoch == 0:
                     anno = rescale_boxes(I.shape, anno, H["image_height"], H["image_width"])
                 I = imresize(I, (H["image_height"], H["image_width"]), interp='cubic')
-                print "{} rescaled".format(anno.imageName)
             if jitter:
                 jitter_scale_min=0.9
                 jitter_scale_max=1.1
